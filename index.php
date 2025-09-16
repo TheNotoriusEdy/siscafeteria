@@ -1,10 +1,40 @@
 <?php
 require_once 'bd/bd.php';
+
+session_start();
+$error = '';
+$login_exitoso = false;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $usuario = $_POST['usuario'] ?? '';
+    $password = $_POST['password'] ?? '';
+    if ($usuario && $password) {
+        // Buscar usuario en la base de datos
+        $stmt = $conn->prepare('SELECT id, usuario, password, nombre, rol_id FROM usuarios WHERE usuario = ?');
+        $stmt->bind_param('s', $usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        if ($row = $result->fetch_assoc()) {
+            // Verificar contraseña (asume password_hash)
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['usuario'] = $row['usuario'];
+                $_SESSION['nombre'] = $row['nombre'];
+                $_SESSION['rol_id'] = $row['rol_id'];
+                $_SESSION['id'] = $row['id'];
+                $login_exitoso = true;
+            } else {
+                $error = 'Contraseña incorrecta.';
+            }
+        } else {
+            $error = 'Usuario no encontrado.';
+        }
+        $stmt->close();
+    } else {
+        $error = 'Por favor ingresa usuario y contraseña.';
+    }
+}
 ?>
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
+
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema Cafetería</title>
@@ -17,15 +47,18 @@ require_once 'bd/bd.php';
 <!-- Login elegante -->
 <div class="login-container">
   <h2>Iniciar Sesión</h2>
-  <form>
+  <form method="POST" autocomplete="off">
     <div class="mb-3">
       <label for="usuario" class="form-label">Usuario</label>
-      <input type="text" class="form-control" id="usuario" placeholder="Ingresa tu usuario">
+      <input type="text" class="form-control" id="usuario" name="usuario" placeholder="Ingresa tu usuario" required>
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Contraseña</label>
-      <input type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña">
+      <input type="password" class="form-control" id="password" name="password" placeholder="Ingresa tu contraseña" required>
     </div>
+    <?php if ($error): ?>
+      <div class="alert alert-danger"> <?= $error ?> </div>
+    <?php endif; ?>
     <button type="submit" class="btn btn-login">Ingresar</button>
   </form>
   <div class="register-link">
@@ -34,7 +67,7 @@ require_once 'bd/bd.php';
 </div>
 
 <!-- Dashboard elegante -->
-<div class="dashboard" style="display:none;">
+<div class="dashboard" style="<?php echo ($login_exitoso) ? '' : 'display:none;'; ?>">
   <header class="dashboard-header">
     <h1>Cafetería Online</h1>
     <nav class="dashboard-menu">

@@ -41,3 +41,5 @@ CREATE TABLE detalle_venta (
 
 
 INSERT INTO roles (nombre) VALUES ('admin'), ('cliente');
+
+INSERT INTO usuarios (usuario,password,nombre,rol_id) VALUES ("admin@correo.com","hola123","Admin",1);
