@@ -1,18 +1,18 @@
  body {
       font-family: 'Roboto', sans-serif;
-      background: #f3f3f3;
+      background-color: #f7f5f0;
       margin: 0;
       padding: 0;
     }
 
-    /* Login elegante */
+    /* Login */
     .login-container {
       max-width: 400px;
-      margin: 8% auto;
-      background: #ffffff;
-      padding: 2.5rem;
+      margin: 10% auto;
+      background-color: #fff;
+      padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
     }
     .login-container h2 {
       text-align: center;
@@ -20,18 +20,18 @@
       margin-bottom: 2rem;
       font-weight: 700;
     }
-    .login-container .form-control {
+    .form-control {
       border-radius: 8px;
       padding: 0.75rem;
       border: 1px solid #ddd;
       transition: 0.3s;
     }
-    .login-container .form-control:focus {
+    .form-control:focus {
       border-color: #4e342e;
       box-shadow: 0 0 5px rgba(78,52,46,0.5);
     }
     .btn-login {
-      background: #4e342e;
+      background-color: #4e342e;
       color: #fff;
       border-radius: 8px;
       width: 100%;
@@ -40,20 +40,7 @@
       transition: 0.3s;
     }
     .btn-login:hover {
-      background: #6d4c41;
-    }
-    .register-link {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-    .register-link a {
-      color: #4e342e;
-      text-decoration: none;
-      font-weight: 500;
-    }
-    .register-link a:hover {
-      text-decoration: underline;
+      background-color: #6d4c41;
     }
 
     /* Dashboard */
@@ -65,12 +52,10 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
     }
     .dashboard-header h1 {
       margin: 0;
       font-weight: 700;
-      letter-spacing: 1px;
     }
     .dashboard-menu {
       margin-top: 0.5rem;
@@ -88,11 +73,12 @@
 
     /* Menú productos */
     .menu-item {
-      background: #fff;
+      background-color: #fff;
       border-radius: 12px;
       overflow: hidden;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
       transition: transform 0.3s, box-shadow 0.3s;
+      text-align: center;
     }
     .menu-item:hover {
       transform: translateY(-5px);
@@ -121,6 +107,7 @@
       border-radius: 8px;
       font-weight: 500;
       transition: 0.3s;
+      margin-bottom: 1rem;
     }
     .btn-pedido:hover {
       background-color: #6d4c41;
@@ -128,14 +115,11 @@
 
     /* Carrito */
     .cart {
-      background: #fff;
+      background-color: #fff;
       padding: 1.5rem;
       border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.1);
       margin-top: 2rem;
-    }
-    .cart table th, .cart table td {
-      vertical-align: middle;
     }
 
     /* Footer */
@@ -144,5 +128,5 @@
       padding: 1rem 0;
       margin-top: 2rem;
       color: #fff;
-      background: #4e342e;
+      background-color: #4e342e;
     }
