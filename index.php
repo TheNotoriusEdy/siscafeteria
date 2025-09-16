@@ -1,17 +1,32 @@
 <?php
-require_once 'controladores/logincontroller.php';
-require_once 'bd/bd.php';
-session_start();
-$error = '';
-$login_exitoso = false;
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+  require_once 'controladores/logincontroller.php';
+  require_once 'bd/bd.php';
+  session_start();
+  $error = '';
+  $login_exitoso = false;
+  if (isset($_GET['logout'])) {
+    session_destroy();
+    header('Location: index.php');
+    exit;
+  }
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'] ?? '';
     $password = $_POST['password'] ?? '';
     $resultado = validar_login($usuario, $password);
     $login_exitoso = $resultado['login_exitoso'];
     $error = $resultado['error'];
-}
+  }
+  $error = '';
+  $login_exitoso = false;
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $usuario = $_POST['usuario'] ?? '';
+      $password = $_POST['password'] ?? '';
+      $resultado = validar_login($usuario, $password);
+      $login_exitoso = $resultado['login_exitoso'];
+      $error = $resultado['error'];
+  }
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -54,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <a href="#">Inicio</a>
       <a href="#">Menú</a>
       <a href="#">Pedidos</a>
-      <a href="#">Cerrar Sesión</a>
+  <a href="?logout=1">Cerrar Sesión</a>
     </nav>
   </header>
 
