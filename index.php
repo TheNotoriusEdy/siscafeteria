@@ -10,24 +10,48 @@
 </head>
 <body>
 
+<?php
+require_once __DIR__ . '/controladores/logincontroller.php';
+$controller = new LoginController();
+$errores = [];
+$login = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $usuario = isset($_POST['email']) ? $_POST['email'] : '';
+    $password = isset($_POST['password']) ? $_POST['password'] : '';
+    $errores = $controller->validarFormulario($usuario, $password);
+    if (count($errores) === 0) {
+        $login = $controller->verificarLogin($usuario, $password);
+    }
+}
+?>
 <!-- Login -->
-<div class="login-container">
+<div class="login-container" <?php if ($login && $login['success']) echo 'style="display:none;"'; ?>>
   <h2>Iniciar Sesión</h2>
   <form method="POST" action="">
     <div class="mb-3">
       <label for="email" class="form-label">Correo electrónico</label>
-      <input type="email" class="form-control" id="email" placeholder="Ingresa tu correo" required>
+      <input type="email" name="email" class="form-control" id="email" placeholder="Ingresa tu correo" required value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
     </div>
     <div class="mb-3">
       <label for="password" class="form-label">Contraseña</label>
-      <input type="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" required>
+      <input type="password" name="password" class="form-control" id="password" placeholder="Ingresa tu contraseña" required>
     </div>
+    <?php if (!empty($errores)) { ?>
+      <div class="alert alert-danger">
+        <?php foreach ($errores as $error) echo $error . '<br>'; ?>
+      </div>
+    <?php } ?>
+    <?php if ($login && !$login['success']) { ?>
+      <div class="alert alert-danger">
+        <?php echo $login['error']; ?>
+      </div>
+    <?php } ?>
     <button type="submit" class="btn btn-login">Ingresar</button>
   </form>
 </div>
 
 <!-- Dashboard (después del login) -->
-<div class="dashboard" style="display:none;">
+<div class="dashboard" <?php if (!($login && $login['success'])) echo 'style="display:none;"'; ?>>
   <header class="dashboard-header">
     <h1>Pedidos Cafetería</h1>
     <nav class="dashboard-menu">
