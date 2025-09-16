@@ -121,21 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>&copy; 2025 Cafetería. Todos los derechos reservados.</p>
   </footer>
 </div>
-
-<script>
-  // Mostrar dashboard al hacer login (solo diseño)
-  const loginForm = document.querySelector('.login-container form');
-  const loginContainer = document.querySelector('.login-container');
-  const dashboard = document.querySelector('.dashboard');
-
-  loginForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    loginContainer.style.display = 'none';
-    dashboard.style.display = 'block';
-  });
-</script>
-
 </body>
 </html>
-
 
