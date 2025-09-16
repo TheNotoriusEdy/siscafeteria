@@ -1,51 +1,31 @@
 <?php
+require_once 'controladores/logincontroller.php';
 require_once 'bd/bd.php';
-
 session_start();
 $error = '';
 $login_exitoso = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario = $_POST['usuario'] ?? '';
     $password = $_POST['password'] ?? '';
-    if ($usuario && $password) {
-        // Buscar usuario en la base de datos
-        $stmt = $conn->prepare('SELECT id, usuario, password, nombre, rol_id FROM usuarios WHERE usuario = ?');
-        $stmt->bind_param('s', $usuario);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
-            // Verificar contraseña (asume password_hash)
-            if (password_verify($password, $row['password'])) {
-                $_SESSION['usuario'] = $row['usuario'];
-                $_SESSION['nombre'] = $row['nombre'];
-                $_SESSION['rol_id'] = $row['rol_id'];
-                $_SESSION['id'] = $row['id'];
-                $login_exitoso = true;
-            } else {
-                $error = 'Contraseña incorrecta.';
-            }
-        } else {
-            $error = 'Usuario no encontrado.';
-        }
-        $stmt->close();
-    } else {
-        $error = 'Por favor ingresa usuario y contraseña.';
-    }
+    $resultado = validar_login($usuario, $password);
+    $login_exitoso = $resultado['login_exitoso'];
+    $error = $resultado['error'];
 }
 ?>
-
-
+<!DOCTYPE html>
+<html lang="es">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sistema Cafetería</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
- <link href="css/index.css" rel="stylesheet"> 
+  <link href="css/index.css" rel="stylesheet"> 
 </head>
 <body>
 
 <!-- Login elegante -->
-<div class="login-container">
+<div class="login-container" style="<?php echo ($login_exitoso) ? 'display:none;' : ''; ?>">
   <h2>Iniciar Sesión</h2>
   <form method="POST" autocomplete="off">
     <div class="mb-3">
@@ -141,20 +121,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <p>&copy; 2025 Cafetería Online. Todos los derechos reservados.</p>
   </footer>
 </div>
-
-<script>
-  // Mostrar dashboard al hacer login (solo diseño)
-  const loginForm = document.querySelector('.login-container form');
-  const loginContainer = document.querySelector('.login-container');
-  const dashboard = document.querySelector('.dashboard');
-
-  loginForm.addEventListener('submit', function(e){
-    e.preventDefault();
-    loginContainer.style.display = 'none';
-    dashboard.style.display = 'block';
-  });
-</script>
-
 </body>
 </html>
 
